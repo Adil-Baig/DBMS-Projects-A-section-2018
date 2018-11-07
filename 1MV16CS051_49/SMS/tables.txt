@@ -1,0 +1,48 @@
+CREATE TABLE `sms`.`user` (
+  `uid` INT NOT NULL AUTO_INCREMENT,
+  `uname` VARCHAR(20) NOT NULL,
+  `upass` VARCHAR(15) NOT NULL,
+  `utype` VARCHAR(1) NOT NULL,
+  PRIMARY KEY (`uid`));
+INSERT INTO `sms`.`user` (`uid`, `uname`, `upass`, `utype`) VALUES ('1', 'admin1', 'admin@123', 'A');
+
+CREATE TABLE `sms`.`tournament` (
+  `tid` INT NOT NULL AUTO_INCREMENT,
+  `tdate` DATE NOT NULL,
+  `venue` VARCHAR(20) NOT NULL,
+  `sport` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`tid`));
+
+CREATE TABLE `sms`.`student` (
+  `sid` INT NOT NULL AUTO_INCREMENT,
+  `sname` VARCHAR(20) NOT NULL,
+  `college` VARCHAR(20) NOT NULL,
+  `age` INT NOT NULL,
+  `gender` VARCHAR(1) NOT NULL,
+  `tid` INT NOT NULL,
+  PRIMARY KEY (`sid`),
+  INDEX `tid_idx` (`tid` ASC) VISIBLE,
+  CONSTRAINT `tid`
+    FOREIGN KEY (`tid`)
+    REFERENCES `sms`.`tournament` (`tid`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+
+CREATE TABLE `sms`.`stats` (
+  `sid` INT NOT NULL,
+  `mplayed` INT NOT NULL,
+  `mwon` INT NOT NULL,
+  `grade` VARCHAR(2) NULL,
+  INDEX `sid_idx` (`sid` ASC) VISIBLE,
+  CONSTRAINT `fk_sid`
+    FOREIGN KEY (`sid`)
+    REFERENCES `sms`.`student` (`sid`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+
+CREATE TABLE `sms`.`result` (
+  `tid` INT NOT NULL,
+  `first` INT NULL,
+  `second` INT NULL,
+  `third` INT NULL,
+  PRIMARY KEY (`tid`));
